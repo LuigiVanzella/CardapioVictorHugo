@@ -266,6 +266,20 @@ main {
   padding-bottom: 20px;
 }
 
+#customer-name {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 1rem;
+  margin-bottom: 12px;
+  outline: none;
+}
+
+#customer-name:focus {
+  border-color: var(--primary);
+}
+
 /* Animação dos itens pulando */
 @keyframes jumpIn {
   0% {

@@ -101,3 +101,54 @@ function renderCartItems() {
 
   totalElement.innerText = `R$ ${totalAmount.toFixed(2).replace(".", ",")}`;
 }
+
+// Envia o pedido para o WhatsApp
+function checkout() {
+  if (cart.length === 0) {
+    alert("Seu carrinho está vazio!");
+    return;
+  }
+
+  let customerName = document.getElementById("customer-name").value.trim();
+  if (!customerName) {
+    alert("Por favor, digite seu nome antes de finalizar o pedido.");
+    return;
+  }
+
+  // Descobre o horário para a saudação correta
+  let hour = new Date().getHours();
+  let greeting = "Boa noite";
+  if (hour >= 5 && hour < 12) greeting = "Bom dia";
+  else if (hour >= 12 && hour < 18) greeting = "Boa tarde";
+
+  // Monta o cabeçalho da mensagem
+  let message = `${greeting} Victor Hugo!\n`;
+  message += `Meu nome é ${customerName}\n`;
+  message += `Segue o pedido que fiz pelo site:\n`;
+
+  let total = 0;
+
+  // Roda todos os itens do carrinho para montar a lista
+  cart.forEach((item) => {
+    let itemTotal = item.price * item.qtd;
+    total += itemTotal;
+
+    message += `----------------\n`;
+    message += `${item.name} x${item.qtd}\n`;
+    message += `quant: ${item.qtd}x de R$ ${item.price.toFixed(2).replace(".", ",")}\n`;
+  });
+
+  // Finaliza com o total
+  message += `----------------\n`;
+  message += `Valor Total: R$ ${total.toFixed(2).replace(".", ",")}`;
+
+  // Codifica a mensagem para formato de link de internet
+  let encodedMessage = encodeURIComponent(message);
+
+  // Seu número com código do país (55) e DDD (11)
+  let phone = "5511949497778";
+
+  // Cria o link do WhatsApp e abre em uma nova aba/janela
+  let whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
+  window.open(whatsappUrl, "_blank");
+}

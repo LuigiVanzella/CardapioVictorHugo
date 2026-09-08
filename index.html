@@ -119,7 +119,17 @@
 
         <div class="cart-footer">
           <h3>Total: <span id="cart-total">R$ 0,00</span></h3>
-          <button class="checkout-btn">Finalizar Pedido</button>
+          <!-- Campo para o nome do cliente -->
+          <input
+            type="text"
+            id="customer-name"
+            placeholder="Digite seu nome"
+            required
+          />
+          <!-- Botão chamando a função checkout() -->
+          <button class="checkout-btn" onclick="checkout()">
+            Finalizar Pedido
+          </button>
         </div>
       </div>
     </div>
