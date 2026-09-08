@@ -1,3 +1,6 @@
+/* ==========================================================================
+   1. VARIÁVEIS & RESET GLOBAL
+   ========================================================================== */
 :root {
   --primary: #d32f2f;
   --success: #27ae60;
@@ -20,6 +23,9 @@ body {
   padding-bottom: 30px;
 }
 
+/* ==========================================================================
+   2. CABEÇALHO & ÍCONE DO CARRINHO
+   ========================================================================== */
 header {
   background-color: var(--primary);
   padding: 16px 20px;
@@ -63,6 +69,9 @@ header h1 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+/* ==========================================================================
+   3. CARDÁPIO / CARDS DE PRODUTO
+   ========================================================================== */
 main {
   padding: 16px;
   display: flex;
@@ -115,6 +124,7 @@ main {
   line-height: 1.3;
 }
 
+/* Controles de Quantidade nos Cards */
 .actions {
   display: flex;
   justify-content: space-between;
@@ -171,6 +181,9 @@ main {
   background-color: #b71c1c;
 }
 
+/* ==========================================================================
+   4. MODAL DO CARRINHO (ESTRUTURA)
+   ========================================================================== */
 #cart-modal {
   position: fixed;
   top: 0;
@@ -205,15 +218,6 @@ main {
   animation: slideUp 0.3s ease-out;
 }
 
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
 .cart-header {
   display: flex;
   justify-content: space-between;
@@ -240,6 +244,9 @@ main {
   cursor: pointer;
 }
 
+/* ==========================================================================
+   5. ITENS LISTADOS NO CARRINHO
+   ========================================================================== */
 #cart-items-container {
   flex: 1;
   overflow-y: auto;
@@ -249,20 +256,34 @@ main {
   padding-bottom: 20px;
 }
 
-#customer-name {
-  width: 100%;
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
   padding: 14px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  border-left: 5px solid var(--primary);
+}
+
+.cart-item-info h4 {
   font-size: 1rem;
-  margin-bottom: 12px;
-  outline: none;
+  margin-bottom: 6px;
 }
 
-#customer-name:focus {
-  border-color: var(--success);
+.cart-item-info p {
+  font-size: 0.85rem;
+  color: var(--text-light);
 }
 
+.cart-item-price {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--success);
+}
+
+/* Controles Internos do Item no Carrinho */
 .cart-item-controls {
   display: flex;
   align-items: center;
@@ -303,6 +324,7 @@ main {
   display: flex;
   align-items: center;
 }
+
 .cart-item-delete img {
   width: 20px;
   height: 20px;
@@ -313,42 +335,9 @@ main {
   transform: scale(0.9);
 }
 
-@keyframes jumpIn {
-  0% {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #fff;
-  padding: 14px;
-  border-radius: 12px;
-  border: 1px solid #f0f0f0;
-  border-left: 5px solid var(--primary);
-}
-
-.cart-item-info h4 {
-  font-size: 1rem;
-  margin-bottom: 6px;
-}
-.cart-item-info p {
-  font-size: 0.85rem;
-  color: var(--text-light);
-}
-.cart-item-price {
-  font-weight: 800;
-  font-size: 1.05rem;
-  color: var(--success);
-}
-
+/* ==========================================================================
+   6. RODAPÉ DO CARRINHO & CHECKOUT
+   ========================================================================== */
 .cart-footer {
   padding-top: 16px;
   background-color: white;
@@ -359,6 +348,20 @@ main {
   justify-content: space-between;
   font-size: 1.2rem;
   margin-bottom: 16px;
+}
+
+#customer-name {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 1rem;
+  margin-bottom: 12px;
+  outline: none;
+}
+
+#customer-name:focus {
+  border-color: var(--success);
 }
 
 .checkout-btn {
@@ -378,7 +381,29 @@ main {
   transform: scale(0.98);
 }
 
-/* Animação do botão balançando para os lados */
+/* ==========================================================================
+   7. ANIMAÇÕES & VALIDAÇÕES DE ERRO
+   ========================================================================== */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes jumpIn {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 @keyframes shake {
   0%,
   100% {
@@ -394,14 +419,13 @@ main {
   }
 }
 
-/* Classe aplicada quando ocorre um erro no botão */
+/* Estados visuais de Erro */
 .checkout-btn.btn-error {
   background-color: #e74c3c !important;
   box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
   animation: shake 0.4s ease-in-out;
 }
 
-/* Estado de erro para o campo de nome */
 #customer-name.input-error {
   border: 2px solid #e74c3c !important;
 }

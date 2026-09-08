@@ -1,5 +1,13 @@
+/* ==========================================================================
+   1. ESTADO GLOBAL DA APLICAÇÃO
+   ========================================================================== */
 let cart = [];
 
+/* ==========================================================================
+   2. CONTROLE DOS CARDS DO CARDÁPIO
+   ========================================================================== */
+
+// Altera a quantidade no seletor do card principal
 function changeQtd(button, amount) {
   let spanQtd = button.parentElement.querySelector(".qtd-value");
   let currentQtd = parseInt(spanQtd.innerText);
@@ -10,6 +18,7 @@ function changeQtd(button, amount) {
   }
 }
 
+// Adiciona o produto do card ao carrinho
 function addToCart(button) {
   let card = button.closest(".card");
   let id = card.getAttribute("data-id");
@@ -25,9 +34,11 @@ function addToCart(button) {
     cart.push({ id, name, price, qtd });
   }
 
+  // Reseta a quantidade do card para 1
   card.querySelector(".qtd-value").innerText = 1;
   updateCartCount();
 
+  // Feedback visual no botão adicionar
   let originalText = button.innerText;
   button.innerText = "Adicionado!";
   button.style.backgroundColor = "#27ae60";
@@ -37,11 +48,17 @@ function addToCart(button) {
   }, 1000);
 }
 
+/* ==========================================================================
+   3. GERENCIAMENTO E EXIBIÇÃO DO CARRINHO (MODAL)
+   ========================================================================== */
+
+// Atualiza a bolinha com total de itens no ícone do topo
 function updateCartCount() {
   let totalItems = cart.reduce((sum, item) => sum + item.qtd, 0);
   document.getElementById("cart-count").innerText = totalItems;
 }
 
+// Abre ou fecha a janela do carrinho
 function toggleCart() {
   let modal = document.getElementById("cart-modal");
   modal.classList.toggle("hidden");
@@ -51,6 +68,7 @@ function toggleCart() {
   }
 }
 
+// Desenha os itens na tela do carrinho
 function renderCartItems() {
   let container = document.getElementById("cart-items-container");
   let totalElement = document.getElementById("cart-total");
@@ -73,27 +91,30 @@ function renderCartItems() {
     itemDiv.className = "cart-item";
 
     itemDiv.innerHTML = `
-            <div class="cart-item-info" style="flex: 1;">
-                <h4>${item.name}</h4>
-                <p style="color: var(--text-light); font-size: 0.85rem;">R$ ${item.price.toFixed(2).replace(".", ",")} cada</p>
-                
-                <div class="cart-item-controls">
-                    <button class="cart-item-btn" onclick="updateCartItemQtd('${item.id}', -1)">-</button>
-                    <span>${item.qtd}</span>
-                    <button class="cart-item-btn" onclick="updateCartItemQtd('${item.id}', 1)">+</button>
-                    <button class="cart-item-delete" onclick="removeCartItem('${item.id}')"><img src="icones/lata_de_lixo.png" alt="Excluir item"></button>
-                </div>
-            </div>
-            <div class="cart-item-price">
-                R$ ${itemTotal.toFixed(2).replace(".", ",")}
-            </div>
-        `;
+      <div class="cart-item-info" style="flex: 1;">
+          <h4>${item.name}</h4>
+          <p style="color: var(--text-light); font-size: 0.85rem;">R$ ${item.price.toFixed(2).replace(".", ",")} cada</p>
+          
+          <div class="cart-item-controls">
+              <button class="cart-item-btn" onclick="updateCartItemQtd('${item.id}', -1)">-</button>
+              <span>${item.qtd}</span>
+              <button class="cart-item-btn" onclick="updateCartItemQtd('${item.id}', 1)">+</button>
+              <button class="cart-item-delete" onclick="removeCartItem('${item.id}')">
+                <img src="icones/lata_de_lixo.png" alt="Excluir item">
+              </button>
+          </div>
+      </div>
+      <div class="cart-item-price">
+          R$ ${itemTotal.toFixed(2).replace(".", ",")}
+      </div>
+    `;
     container.appendChild(itemDiv);
   });
 
   totalElement.innerText = `R$ ${totalAmount.toFixed(2).replace(".", ",")}`;
 }
 
+// Altera quantidade diretamente no carrinho (+ e -)
 function updateCartItemQtd(id, amount) {
   let item = cart.find((i) => i.id === id);
   if (item) {
@@ -108,16 +129,20 @@ function updateCartItemQtd(id, amount) {
   }
 }
 
+// Remove o item do carrinho
 function removeCartItem(id) {
   cart = cart.filter((item) => item.id !== id);
   renderCartItems();
   updateCartCount();
 }
 
+/* ==========================================================================
+   4. FINALIZAÇÃO DO PEDIDO (WHATSAPP)
+   ========================================================================== */
 function checkout() {
   let checkoutBtn = document.querySelector(".checkout-btn");
 
-  // Validação de carrinho vazio com feedback visual
+  // Validação: Carrinho vazio
   if (cart.length === 0) {
     checkoutBtn.classList.add("btn-error");
 
@@ -131,7 +156,7 @@ function checkout() {
   let nameInput = document.getElementById("customer-name");
   let customerName = nameInput.value.trim();
 
-  // Validação do nome do cliente com borda vermelha e tremor no botão
+  // Validação: Nome do cliente não informado
   if (!customerName) {
     nameInput.focus();
     nameInput.classList.add("input-error");
@@ -145,11 +170,13 @@ function checkout() {
     return;
   }
 
+  // Saudação automática baseada no horário
   let hour = new Date().getHours();
   let greeting = "Boa noite";
   if (hour >= 5 && hour < 12) greeting = "Bom dia";
   else if (hour >= 12 && hour < 18) greeting = "Boa tarde";
 
+  // Montagem da mensagem formatada para o WhatsApp
   let message = `${greeting} Victor Hugo!\n`;
   message += `Meu nome é ${customerName}\n`;
   message += `Segue o pedido que fiz pelo site:\n`;
@@ -168,6 +195,7 @@ function checkout() {
   message += `----------------\n`;
   message += `Valor Total: R$ ${total.toFixed(2).replace(".", ",")}`;
 
+  // Envio via API do WhatsApp
   let encodedMessage = encodeURIComponent(message);
   let phone = "5511949497778";
   let whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
