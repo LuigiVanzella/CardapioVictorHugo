@@ -81,7 +81,7 @@ function renderCartItems() {
                     <button class="cart-item-btn" onclick="updateCartItemQtd('${item.id}', -1)">-</button>
                     <span>${item.qtd}</span>
                     <button class="cart-item-btn" onclick="updateCartItemQtd('${item.id}', 1)">+</button>
-                    <button class="cart-item-delete" onclick="removeCartItem('${item.id}')">🗑️</button>
+                    <button class="cart-item-delete" onclick="removeCartItem('${item.id}')"><img src="icones/lata_de_lixo.png" alt="Excluir item"></button>
                 </div>
             </div>
             <div class="cart-item-price">
@@ -128,14 +128,17 @@ function checkout() {
     return;
   }
 
-  let customerName = document.getElementById("customer-name").value.trim();
+  let nameInput = document.getElementById("customer-name");
+  let customerName = nameInput.value.trim();
 
-  // Validação do nome do cliente com o mesmo feedback visual
+  // Validação do nome do cliente com borda vermelha e tremor no botão
   if (!customerName) {
-    document.getElementById("customer-name").focus();
+    nameInput.focus();
+    nameInput.classList.add("input-error");
     checkoutBtn.classList.add("btn-error");
 
     setTimeout(() => {
+      nameInput.classList.remove("input-error");
       checkoutBtn.classList.remove("btn-error");
     }, 2000);
 

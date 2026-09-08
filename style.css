@@ -296,10 +296,17 @@ main {
 .cart-item-delete {
   background: none;
   border: none;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  margin-left: auto;
+  margin-left: 4px;
   color: #e74c3c;
+  display: flex;
+  align-items: center;
+}
+.cart-item-delete img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
 
 .cart-item-delete:active {
@@ -392,4 +399,9 @@ main {
   background-color: #e74c3c !important;
   box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
   animation: shake 0.4s ease-in-out;
+}
+
+/* Estado de erro para o campo de nome */
+#customer-name.input-error {
+  border: 2px solid #e74c3c !important;
 }
