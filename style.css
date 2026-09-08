@@ -1,4 +1,3 @@
-/* Variáveis de Cores e Medidas para facilitar manutenção */
 :root {
   --primary: #d32f2f;
   --success: #27ae60;
@@ -12,7 +11,7 @@
   margin: 0;
   padding: 0;
   font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  -webkit-tap-highlight-color: transparent; /* Remove aquele quadrado azul ao tocar em botões no celular */
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -20,10 +19,6 @@ body {
   color: var(--text-main);
   padding-bottom: 30px;
 }
-
-/* ================================= */
-/* CABEÇALHO (HEADER)                */
-/* ================================= */
 
 header {
   background-color: var(--primary);
@@ -48,7 +43,7 @@ header h1 {
   font-size: 1.6rem;
   position: relative;
   cursor: pointer;
-  padding: 5px; /* Aumenta a área de toque invisível */
+  padding: 5px;
 }
 
 #cart-count {
@@ -68,16 +63,12 @@ header h1 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* ================================= */
-/* LISTA DE PRODUTOS                 */
-/* ================================= */
-
 main {
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 500px; /* Mantém bonito caso abram no PC */
+  max-width: 500px;
   margin: 0 auto;
 }
 
@@ -124,10 +115,6 @@ main {
   line-height: 1.3;
 }
 
-/* ================================= */
-/* CONTROLES DE TOQUE (BOTÕES)       */
-/* ================================= */
-
 .actions {
   display: flex;
   justify-content: space-between;
@@ -142,7 +129,7 @@ main {
   border: 1.5px solid #eee;
   border-radius: 8px;
   overflow: hidden;
-  height: 38px; /* Altura ideal para toque de dedo */
+  height: 38px;
 }
 
 .qtd-selector button {
@@ -172,7 +159,7 @@ main {
   color: white;
   border: none;
   height: 38px;
-  flex: 1; /* Ocupa o resto do espaço */
+  flex: 1;
   border-radius: 8px;
   font-weight: 700;
   font-size: 0.9rem;
@@ -181,12 +168,8 @@ main {
 }
 
 .btn-add:active {
-  background-color: #b71c1c; /* Fica mais escuro ao tocar */
+  background-color: #b71c1c;
 }
-
-/* ================================= */
-/* CARRINHO (ESTILO BOTTOM SHEET)    */
-/* ================================= */
 
 #cart-modal {
   position: fixed;
@@ -199,7 +182,7 @@ main {
   z-index: 200;
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* Faz a janela ficar colada no fundo */
+  align-items: flex-end;
   transition: opacity 0.3s;
 }
 
@@ -213,8 +196,8 @@ main {
   background-color: white;
   width: 100%;
   max-width: 500px;
-  height: 85vh; /* Ocupa 85% da tela */
-  border-radius: 24px 24px 0 0; /* Bordas arredondadas apenas em cima */
+  height: 85vh;
+  border-radius: 24px 24px 0 0;
   padding: 24px 20px;
   display: flex;
   flex-direction: column;
@@ -280,7 +263,49 @@ main {
   border-color: var(--primary);
 }
 
-/* Animação dos itens pulando */
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.cart-item-btn {
+  background-color: #f0f0f0;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.cart-item-btn:active {
+  background-color: #e0e0e0;
+}
+
+.cart-item-controls span {
+  font-weight: 700;
+  font-size: 1rem;
+  min-width: 20px;
+  text-align: center;
+}
+
+.cart-item-delete {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  margin-left: auto;
+  color: #e74c3c;
+}
+
+.cart-item-delete:active {
+  transform: scale(0.9);
+}
+
 @keyframes jumpIn {
   0% {
     transform: translateY(20px);
@@ -301,8 +326,6 @@ main {
   border-radius: 12px;
   border: 1px solid #f0f0f0;
   border-left: 5px solid var(--primary);
-  opacity: 0;
-  animation: jumpIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 .cart-item-info h4 {

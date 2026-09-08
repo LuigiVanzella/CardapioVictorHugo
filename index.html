@@ -4,19 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cardápio do Vitinho</title>
+    <!-- Conexão com o CSS -->
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <header>
       <h1>Cardápio do Vitinho</h1>
-      <!-- Ícone do carrinho -->
       <div id="cart-icon" onclick="toggleCart()">
         🛒 <span id="cart-count">0</span>
       </div>
     </header>
 
     <main>
-      <!-- CARD 1 -->
       <div
         class="card"
         data-id="1"
@@ -33,8 +32,6 @@
           <p class="desc">
             Pipoca artesanal crocante com cobertura de caramelo.
           </p>
-
-          <!-- Controles de Quantidade e Botão -->
           <div class="actions">
             <div class="qtd-selector">
               <button class="btn-minus" onclick="changeQtd(this, -1)">-</button>
@@ -46,7 +43,6 @@
         </div>
       </div>
 
-      <!-- CARD 2 -->
       <div
         class="card"
         data-id="2"
@@ -63,36 +59,6 @@
           <p class="desc">
             Cacau 50% e um toque especial de chocolate meio amargo.
           </p>
-
-          <div class="actions">
-            <div class="qtd-selector">
-              <button class="btn-minus" onclick="changeQtd(this, -1)">-</button>
-              <span class="qtd-value">1</span>
-              <button class="btn-plus" onclick="changeQtd(this, 1)">+</button>
-            </div>
-            <button class="btn-add" onclick="addToCart(this)">Adicionar</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- CARD 3 -->
-      <div
-        class="card"
-        data-id="3"
-        data-name="Pipoca de Leite Ninho"
-        data-price="14.00"
-      >
-        <img
-          src="https://via.placeholder.com/150/FFFACD/333333?text=Pipoca"
-          alt="Pipoca de Leite Ninho"
-        />
-        <div class="info">
-          <h2>Pipoca de Leite Ninho</h2>
-          <p class="price">R$ 14,00</p>
-          <p class="desc">
-            A favorita! Pipoca doce envolvida no autêntico Leite Ninho.
-          </p>
-
           <div class="actions">
             <div class="qtd-selector">
               <button class="btn-minus" onclick="changeQtd(this, -1)">-</button>
@@ -105,28 +71,21 @@
       </div>
     </main>
 
-    <!-- Modal do Carrinho de Compras -->
     <div id="cart-modal" class="hidden">
       <div class="cart-content">
         <div class="cart-header">
           <h2>Seu Pedido</h2>
           <button class="close-btn" onclick="toggleCart()">X</button>
         </div>
-
-        <div id="cart-items-container">
-          <!-- Os itens pularão aqui dentro via JavaScript -->
-        </div>
-
+        <div id="cart-items-container"></div>
         <div class="cart-footer">
           <h3>Total: <span id="cart-total">R$ 0,00</span></h3>
-          <!-- Campo para o nome do cliente -->
           <input
             type="text"
             id="customer-name"
             placeholder="Digite seu nome"
             required
           />
-          <!-- Botão chamando a função checkout() -->
           <button class="checkout-btn" onclick="checkout()">
             Finalizar Pedido
           </button>
@@ -134,7 +93,7 @@
       </div>
     </div>
 
-    <!-- Chamando o arquivo JavaScript -->
+    <!-- Conexão com o JavaScript -->
     <script src="script.js"></script>
   </body>
 </html>
