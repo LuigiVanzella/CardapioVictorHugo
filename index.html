@@ -1,140 +1,157 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cardápio do Vitinho</title>
-    
+
     <style>
-        /* CSS focado em Dispositivos Móveis */
-        
-        /* Reset básico para manter tudo alinhado */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+      /* CSS focado em Dispositivos Móveis */
 
-        body {
-            background-color: #fcf9f2; /* Cor de fundo leve e agradável */
-            color: #333;
-        }
+      /* Reset básico para manter tudo alinhado */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
 
-        /* Estilo do Topo */
-        header {
-            background-color: #d32f2f; /* Vermelho que remete a pipoca */
-            padding: 20px 15px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+      body {
+        background-color: #fcf9f2; /* Cor de fundo leve e agradável */
+        color: #333;
+      }
 
-        header h1 {
-            color: #ffffff;
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+      /* Estilo do Topo */
+      header {
+        background-color: #d32f2f; /* Vermelho que remete a pipoca */
+        padding: 20px 15px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
 
-        /* Container Principal */
+      header h1 {
+        color: #ffffff;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* Container Principal */
+      main {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px; /* Espaço entre os cards */
+      }
+
+      /* O Card Horizontal */
+      .card {
+        display: flex;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        align-items: center; /* Centraliza a imagem e o texto verticalmente */
+      }
+
+      /* Lado Esquerdo: Imagem */
+      .card img {
+        width: 110px;
+        height: 110px;
+        object-fit: cover; /* Faz a imagem preencher o espaço sem distorcer */
+        background-color: #eee;
+      }
+
+      /* Lado Direito: Informações */
+      .info {
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        flex: 1; /* Faz o texto ocupar o restante do espaço */
+      }
+
+      .info h2 {
+        font-size: 1.1rem;
+        color: #222;
+      }
+
+      .info .price {
+        font-size: 1.05rem;
+        font-weight: bold;
+        color: #27ae60; /* Verde para destacar o valor */
+      }
+
+      .info .desc {
+        font-size: 0.85rem;
+        color: #666;
+        line-height: 1.3;
+      }
+
+      /* Ajuste para telas um pouco maiores (Tablets) */
+      @media (min-width: 600px) {
         main {
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px; /* Espaço entre os cards */
+          max-width: 600px;
+          margin: 0 auto;
         }
-
-        /* O Card Horizontal */
-        .card {
-            display: flex;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            align-items: center; /* Centraliza a imagem e o texto verticalmente */
-        }
-
-        /* Lado Esquerdo: Imagem */
-        .card img {
-            width: 110px;
-            height: 110px;
-            object-fit: cover; /* Faz a imagem preencher o espaço sem distorcer */
-            background-color: #eee;
-        }
-
-        /* Lado Direito: Informações */
-        .info {
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 5px;
-            flex: 1; /* Faz o texto ocupar o restante do espaço */
-        }
-
-        .info h2 {
-            font-size: 1.1rem;
-            color: #222;
-        }
-
-        .info .price {
-            font-size: 1.05rem;
-            font-weight: bold;
-            color: #27ae60; /* Verde para destacar o valor */
-        }
-
-        .info .desc {
-            font-size: 0.85rem;
-            color: #666;
-            line-height: 1.3;
-        }
-
-        /* Ajuste para telas um pouco maiores (Tablets) */
-        @media (min-width: 600px) {
-            main {
-                max-width: 600px;
-                margin: 0 auto;
-            }
-        }
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <header>
-        <h1>Cardápio do Vitinho</h1>
+      <h1>Cardápio do Vitinho</h1>
     </header>
 
     <main>
-        <div class="card">
-            <img src="https://via.placeholder.com/150/FFB347/FFFFFF?text=Pipoca" alt="Pipoca de Caramelo">
-            <div class="info">
-                <h2>Pipoca de Caramelo</h2>
-                <p class="price">R$ 12,00</p>
-                <p class="desc">Pipoca artesanal crocante com uma cobertura generosa de caramelo.</p>
-            </div>
+      <div class="card">
+        <img
+          src="https://via.placeholder.com/150/FFB347/FFFFFF?text=Pipoca"
+          alt="Pipoca de Caramelo"
+        />
+        <div class="info">
+          <h2>Pipoca de Caramelo</h2>
+          <p class="price">R$ 12,00</p>
+          <p class="desc">
+            Pipoca artesanal crocante com uma cobertura generosa de caramelo.
+          </p>
         </div>
 
-        <div class="card">
-            <img src="https://via.placeholder.com/150/8B4513/FFFFFF?text=Pipoca" alt="Pipoca de Chocolate">
-            <div class="info">
-                <h2>Pipoca de Chocolate Trufado</h2>
-                <p class="price">R$ 15,00</p>
-                <p class="desc">Feita com cacau 50% e um toque especial de chocolate meio amargo.</p>
-            </div>
+        <div>
+          <h2>oi</h2>
         </div>
+      </div>
 
-        <div class="card">
-            <img src="https://via.placeholder.com/150/FFFACD/333333?text=Pipoca" alt="Pipoca de Leite Ninho">
-            <div class="info">
-                <h2>Pipoca de Leite Ninho</h2>
-                <p class="price">R$ 14,00</p>
-                <p class="desc">A favorita! Pipoca doce envolvida no autêntico Leite Ninho.</p>
-            </div>
+      <div class="card">
+        <img
+          src="https://via.placeholder.com/150/8B4513/FFFFFF?text=Pipoca"
+          alt="Pipoca de Chocolate"
+        />
+        <div class="info">
+          <h2>Pipoca de Chocolate Trufado</h2>
+          <p class="price">R$ 15,00</p>
+          <p class="desc">
+            Feita com cacau 50% e um toque especial de chocolate meio amargo.
+          </p>
         </div>
+      </div>
+
+      <div class="card">
+        <img
+          src="https://via.placeholder.com/150/FFFACD/333333?text=Pipoca"
+          alt="Pipoca de Leite Ninho"
+        />
+        <div class="info">
+          <h2>Pipoca de Leite Ninho</h2>
+          <p class="price">R$ 14,00</p>
+          <p class="desc">
+            A favorita! Pipoca doce envolvida no autêntico Leite Ninho.
+          </p>
+        </div>
+      </div>
     </main>
-
-</body>
+  </body>
 </html>
