@@ -1,24 +1,37 @@
+/* Variáveis de Cores e Medidas para facilitar manutenção */
+:root {
+  --primary: #d32f2f;
+  --success: #27ae60;
+  --bg-color: #fcf9f2;
+  --text-main: #222;
+  --text-light: #666;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent; /* Remove aquele quadrado azul ao tocar em botões no celular */
 }
 
 body {
-  background-color: #fcf9f2;
-  color: #333;
-  padding-bottom: 20px;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  padding-bottom: 30px;
 }
 
-/* Header com Flexbox para separar o título do carrinho */
+/* ================================= */
+/* CABEÇALHO (HEADER)                */
+/* ================================= */
+
 header {
-  background-color: #d32f2f;
-  padding: 20px 15px;
+  background-color: var(--primary);
+  padding: 16px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -26,122 +39,153 @@ header {
 
 header h1 {
   color: #ffffff;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 #cart-icon {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   position: relative;
   cursor: pointer;
+  padding: 5px; /* Aumenta a área de toque invisível */
 }
 
 #cart-count {
   background-color: #f1c40f;
   color: #333;
-  font-size: 0.8rem;
-  font-weight: bold;
+  font-size: 0.75rem;
+  font-weight: 900;
   border-radius: 50%;
-  padding: 2px 6px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  top: -5px;
-  right: -10px;
+  top: -2px;
+  right: -5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+/* ================================= */
+/* LISTA DE PRODUTOS                 */
+/* ================================= */
+
 main {
-  padding: 15px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  max-width: 600px;
+  gap: 16px;
+  max-width: 500px; /* Mantém bonito caso abram no PC */
   margin: 0 auto;
 }
 
 .card {
   display: flex;
   background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
   align-items: stretch;
 }
 
 .card img {
-  width: 110px;
+  width: 100px;
+  min-height: 100%;
   object-fit: cover;
   background-color: #eee;
 }
 
 .info {
-  padding: 12px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 5px;
+  gap: 8px;
   flex: 1;
 }
 
 .info h2 {
-  font-size: 1.1rem;
-  color: #222;
-}
-.info .price {
   font-size: 1.05rem;
-  font-weight: bold;
-  color: #27ae60;
-}
-.info .desc {
-  font-size: 0.85rem;
-  color: #666;
+  color: var(--text-main);
   line-height: 1.2;
-  margin-bottom: 8px;
 }
 
-/* Estilos dos botões no card */
+.info .price {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--success);
+}
+
+.info .desc {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.3;
+}
+
+/* ================================= */
+/* CONTROLES DE TOQUE (BOTÕES)       */
+/* ================================= */
+
 .actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: auto;
+  margin-top: 8px;
+  gap: 10px;
 }
 
 .qtd-selector {
   display: flex;
   align-items: center;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  border: 1.5px solid #eee;
+  border-radius: 8px;
   overflow: hidden;
+  height: 38px; /* Altura ideal para toque de dedo */
 }
 
 .qtd-selector button {
-  background-color: #f8f8f8;
+  background-color: #fff;
   border: none;
-  padding: 5px 12px;
-  font-size: 1.1rem;
+  width: 36px;
+  height: 100%;
+  font-size: 1.3rem;
   cursor: pointer;
-  color: #d32f2f;
+  color: var(--primary);
   font-weight: bold;
+}
+
+.qtd-selector button:active {
+  background-color: #f0f0f0;
 }
 
 .qtd-selector .qtd-value {
-  padding: 0 10px;
-  font-size: 0.9rem;
-  font-weight: bold;
+  width: 24px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .btn-add {
-  background-color: #d32f2f;
+  background-color: var(--primary);
   color: white;
   border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-weight: bold;
+  height: 38px;
+  flex: 1; /* Ocupa o resto do espaço */
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
   cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-add:active {
+  background-color: #b71c1c; /* Fica mais escuro ao tocar */
 }
 
 /* ================================= */
-/* MODAL DO CARRINHO E ANIMAÇÕES     */
+/* CARRINHO (ESTILO BOTTOM SHEET)    */
 /* ================================= */
 
 #cart-modal {
@@ -150,45 +194,66 @@ main {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
   z-index: 200;
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* Aparece de baixo pra cima */
+  align-items: flex-end; /* Faz a janela ficar colada no fundo */
   transition: opacity 0.3s;
 }
 
 #cart-modal.hidden {
   display: none;
   opacity: 0;
+  pointer-events: none;
 }
 
 .cart-content {
   background-color: white;
   width: 100%;
-  max-width: 600px;
-  height: 80vh;
-  border-radius: 20px 20px 0 0;
-  padding: 20px;
+  max-width: 500px;
+  height: 85vh; /* Ocupa 85% da tela */
+  border-radius: 24px 24px 0 0; /* Bordas arredondadas apenas em cima */
+  padding: 24px 20px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 .cart-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.cart-header h2 {
+  font-size: 1.3rem;
+  color: var(--text-main);
 }
 
 .close-btn {
-  background: none;
+  background: #f0f0f0;
   border: none;
-  font-size: 1.2rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1rem;
   font-weight: bold;
-  color: #999;
+  color: var(--text-light);
   cursor: pointer;
 }
 
@@ -198,21 +263,17 @@ main {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 10px 0;
+  padding-bottom: 20px;
 }
 
-/* A Mágica do Salto (Animação) */
+/* Animação dos itens pulando */
 @keyframes jumpIn {
   0% {
-    transform: translateY(50px) scale(0.5);
+    transform: translateY(20px);
     opacity: 0;
   }
-  60% {
-    transform: translateY(-10px) scale(1.05);
-    opacity: 1;
-  }
   100% {
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
     opacity: 1;
   }
 }
@@ -221,42 +282,54 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f9f9f9;
-  padding: 12px;
-  border-radius: 8px;
-  border-left: 4px solid #d32f2f;
-  opacity: 0; /* Começa invisível para a animação agir */
-  animation: jumpIn 0.5s ease-out forwards;
+  background-color: #fff;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  border-left: 5px solid var(--primary);
+  opacity: 0;
+  animation: jumpIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 .cart-item-info h4 {
-  font-size: 0.95rem;
-  margin-bottom: 4px;
+  font-size: 1rem;
+  margin-bottom: 6px;
 }
 .cart-item-info p {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--text-light);
 }
 .cart-item-price {
-  font-weight: bold;
-  color: #27ae60;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--success);
 }
 
 .cart-footer {
-  border-top: 1px solid #eee;
-  padding-top: 15px;
-  text-align: center;
+  padding-top: 16px;
+  background-color: white;
+}
+
+.cart-footer h3 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  margin-bottom: 16px;
 }
 
 .checkout-btn {
   width: 100%;
-  background-color: #27ae60;
+  background-color: var(--success);
   color: white;
   border: none;
-  padding: 15px;
-  border-radius: 8px;
+  padding: 16px;
+  border-radius: 12px;
   font-size: 1.1rem;
-  font-weight: bold;
-  margin-top: 10px;
+  font-weight: 800;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.checkout-btn:active {
+  transform: scale(0.98);
 }
