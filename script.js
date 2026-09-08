@@ -115,14 +115,30 @@ function removeCartItem(id) {
 }
 
 function checkout() {
+  let checkoutBtn = document.querySelector(".checkout-btn");
+
+  // Validação de carrinho vazio com feedback visual
   if (cart.length === 0) {
-    alert("Seu carrinho está vazio!");
+    checkoutBtn.classList.add("btn-error");
+
+    setTimeout(() => {
+      checkoutBtn.classList.remove("btn-error");
+    }, 600);
+
     return;
   }
 
   let customerName = document.getElementById("customer-name").value.trim();
+
+  // Validação do nome do cliente com o mesmo feedback visual
   if (!customerName) {
-    alert("Por favor, digite seu nome antes de finalizar o pedido.");
+    document.getElementById("customer-name").focus();
+    checkoutBtn.classList.add("btn-error");
+
+    setTimeout(() => {
+      checkoutBtn.classList.remove("btn-error");
+    }, 2000);
+
     return;
   }
 

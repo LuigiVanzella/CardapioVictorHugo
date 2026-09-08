@@ -260,7 +260,7 @@ main {
 }
 
 #customer-name:focus {
-  border-color: var(--primary);
+  border-color: var(--success);
 }
 
 .cart-item-controls {
@@ -369,4 +369,27 @@ main {
 
 .checkout-btn:active {
   transform: scale(0.98);
+}
+
+/* Animação do botão balançando para os lados */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-8px);
+  }
+  40%,
+  80% {
+    transform: translateX(8px);
+  }
+}
+
+/* Classe aplicada quando ocorre um erro no botão */
+.checkout-btn.btn-error {
+  background-color: #e74c3c !important;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+  animation: shake 0.4s ease-in-out;
 }
