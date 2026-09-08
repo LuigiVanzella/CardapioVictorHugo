@@ -9,10 +9,20 @@
   <body>
     <header>
       <h1>Cardápio do Vitinho</h1>
+      <!-- Ícone do carrinho -->
+      <div id="cart-icon" onclick="toggleCart()">
+        🛒 <span id="cart-count">0</span>
+      </div>
     </header>
 
     <main>
-      <div class="card">
+      <!-- CARD 1 -->
+      <div
+        class="card"
+        data-id="1"
+        data-name="Pipoca de Caramelo"
+        data-price="12.00"
+      >
         <img
           src="https://via.placeholder.com/150/FFB347/FFFFFF?text=Pipoca"
           alt="Pipoca de Caramelo"
@@ -21,12 +31,28 @@
           <h2>Pipoca de Caramelo</h2>
           <p class="price">R$ 12,00</p>
           <p class="desc">
-            Pipoca artesanal crocante com uma cobertura generosa de caramelo.
+            Pipoca artesanal crocante com cobertura de caramelo.
           </p>
+
+          <!-- Controles de Quantidade e Botão -->
+          <div class="actions">
+            <div class="qtd-selector">
+              <button class="btn-minus" onclick="changeQtd(this, -1)">-</button>
+              <span class="qtd-value">1</span>
+              <button class="btn-plus" onclick="changeQtd(this, 1)">+</button>
+            </div>
+            <button class="btn-add" onclick="addToCart(this)">Adicionar</button>
+          </div>
         </div>
       </div>
 
-      <div class="card">
+      <!-- CARD 2 -->
+      <div
+        class="card"
+        data-id="2"
+        data-name="Pipoca de Chocolate"
+        data-price="15.00"
+      >
         <img
           src="https://via.placeholder.com/150/8B4513/FFFFFF?text=Pipoca"
           alt="Pipoca de Chocolate"
@@ -35,12 +61,27 @@
           <h2>Pipoca de Chocolate Trufado</h2>
           <p class="price">R$ 15,00</p>
           <p class="desc">
-            Feita com cacau 50% e um toque especial de chocolate meio amargo.
+            Cacau 50% e um toque especial de chocolate meio amargo.
           </p>
+
+          <div class="actions">
+            <div class="qtd-selector">
+              <button class="btn-minus" onclick="changeQtd(this, -1)">-</button>
+              <span class="qtd-value">1</span>
+              <button class="btn-plus" onclick="changeQtd(this, 1)">+</button>
+            </div>
+            <button class="btn-add" onclick="addToCart(this)">Adicionar</button>
+          </div>
         </div>
       </div>
 
-      <div class="card">
+      <!-- CARD 3 -->
+      <div
+        class="card"
+        data-id="3"
+        data-name="Pipoca de Leite Ninho"
+        data-price="14.00"
+      >
         <img
           src="https://via.placeholder.com/150/FFFACD/333333?text=Pipoca"
           alt="Pipoca de Leite Ninho"
@@ -51,8 +92,39 @@
           <p class="desc">
             A favorita! Pipoca doce envolvida no autêntico Leite Ninho.
           </p>
+
+          <div class="actions">
+            <div class="qtd-selector">
+              <button class="btn-minus" onclick="changeQtd(this, -1)">-</button>
+              <span class="qtd-value">1</span>
+              <button class="btn-plus" onclick="changeQtd(this, 1)">+</button>
+            </div>
+            <button class="btn-add" onclick="addToCart(this)">Adicionar</button>
+          </div>
         </div>
       </div>
     </main>
+
+    <!-- Modal do Carrinho de Compras -->
+    <div id="cart-modal" class="hidden">
+      <div class="cart-content">
+        <div class="cart-header">
+          <h2>Seu Pedido</h2>
+          <button class="close-btn" onclick="toggleCart()">X</button>
+        </div>
+
+        <div id="cart-items-container">
+          <!-- Os itens pularão aqui dentro via JavaScript -->
+        </div>
+
+        <div class="cart-footer">
+          <h3>Total: <span id="cart-total">R$ 0,00</span></h3>
+          <button class="checkout-btn">Finalizar Pedido</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chamando o arquivo JavaScript -->
+    <script src="script.js"></script>
   </body>
 </html>
