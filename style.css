@@ -251,7 +251,7 @@ main {
 #cart-items-container {
   flex: 1 1 auto;
   overflow-y: auto;
-  min-height: 260px; /* Garante que o bloco nunca fique menor que 1 item inteiro */
+  min-height: 150px; /* Garante que o bloco nunca fique menor que 1 item inteiro */
   display: flex;
   flex-direction: column;
   gap: 12px;
