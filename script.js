@@ -2,7 +2,8 @@ let cart = [];
 let bucketMode = 1;
 let selectedFlavors = [];
 let currentQtd = 1;
-let deliveryMode = "delivery"; // 'delivery' ou 'pickup'
+let deliveryMode = "delivery";
+let finalCalculatedTotal = 0;
 
 const FLAVORS = [
   { id: "bueno", label: "Bueno" },
@@ -124,7 +125,10 @@ function updateCartCount() {
 function toggleCart() {
   let modal = document.getElementById("cart-modal");
   modal.classList.toggle("hidden");
-  if (!modal.classList.contains("hidden")) renderCartItems();
+  if (!modal.classList.contains("hidden")) {
+    showStep("step-cart");
+    renderCartItems();
+  }
 }
 
 function setDeliveryMode(mode) {
@@ -156,6 +160,7 @@ function renderCartItems() {
     container.innerHTML =
       '<p style="text-align:center; color:#999; margin-top:20px;">Seu carrinho está vazio.</p>';
     totalElement.innerText = "R$ 0,00";
+    finalCalculatedTotal = 0;
     return;
   }
 
@@ -179,6 +184,7 @@ function renderCartItems() {
   });
 
   if (deliveryMode === "delivery") totalAmount += 10;
+  finalCalculatedTotal = totalAmount;
   totalElement.innerText = `R$ ${totalAmount.toFixed(2).replace(".", ",")}`;
 }
 
@@ -200,8 +206,17 @@ function removeCartItem(id) {
   updateCartCount();
 }
 
-function checkout() {
-  let checkoutBtn = document.querySelector(".checkout-btn");
+function showStep(stepId) {
+  document.getElementById("step-cart").classList.add("hidden");
+  document.getElementById("step-payment").classList.add("hidden");
+  document.getElementById("step-success").classList.add("hidden");
+
+  document.getElementById(stepId).classList.remove("hidden");
+}
+
+/* FLUXO DO PIX E PAGAMENTO */
+function goToPaymentStep() {
+  let checkoutBtn = document.querySelector("#step-cart .checkout-btn");
   if (cart.length === 0) {
     checkoutBtn.classList.add("btn-error");
     setTimeout(() => checkoutBtn.classList.remove("btn-error"), 2000);
@@ -227,6 +242,40 @@ function checkout() {
     return;
   }
 
+  document.getElementById("pix-display-total").innerText =
+    `R$ ${finalCalculatedTotal.toFixed(2).replace(".", ",")}`;
+  showStep("step-payment");
+}
+
+function copyPixKey() {
+  let input = document.getElementById("pix-key-input");
+  input.select();
+  document.execCommand("copy");
+  alert("Chave Pix copiada!");
+}
+
+function confirmPaymentAndFinish() {
+  // Exibe a tela final para o usuário no site
+  if (deliveryMode === "delivery") {
+    document.getElementById("delivery-time-info").classList.remove("hidden");
+    document.getElementById("pickup-info").classList.add("hidden");
+  } else {
+    document.getElementById("delivery-time-info").classList.add("hidden");
+    document.getElementById("pickup-info").classList.remove("hidden");
+  }
+
+  showStep("step-success");
+
+  // Envia a notificação com status PAGO para a cozinha via WhatsApp
+  sendWhatsAppNotification();
+}
+
+function sendWhatsAppNotification() {
+  let customerName = document.getElementById("customer-name").value.trim();
+  let customerAddress = document
+    .getElementById("customer-address")
+    .value.trim();
+
   let hour = new Date().getHours();
   let greeting =
     hour >= 5 && hour < 12
@@ -235,25 +284,31 @@ function checkout() {
         ? "Boa tarde"
         : "Boa noite";
 
-  let message = `${greeting} Victor Hugo!\nMeu nome é *${customerName}*\nSegue o pedido que fiz pelo site:\n`;
-  let total = 0;
+  let message = `${greeting} Victor Hugo!\nNovo pedido recebido pelo site:\n`;
+  message += `*STATUS:* ✅ PAGAMENTO CONFIRMADO (PIX)\n`;
+  message += `*Cliente:* ${customerName}\n`;
 
   cart.forEach((item) => {
-    let itemTotal = item.price * item.qtd;
-    total += itemTotal;
     message += `----------------\n${item.qtd}x ${item.name} (R$ ${item.price.toFixed(2).replace(".", ",")})\n`;
   });
 
   message += `----------------\n*Método de Entrega:* ${deliveryMode === "delivery" ? "Entrega Padrão (+ R$ 10,00)" : "Retirada no Local"}\n`;
   if (deliveryMode === "delivery") {
-    total += 10;
     message += `*Endereço:* ${customerAddress}\n`;
   }
 
-  message += `----------------\n*Valor Total:* R$ ${total.toFixed(2).replace(".", ",")}`;
+  message += `----------------\n*Valor Total Pago:* R$ ${finalCalculatedTotal.toFixed(2).replace(".", ",")}`;
 
   window.open(
     `https://wa.me/5511949497778?text=${encodeURIComponent(message)}`,
     "_blank",
   );
+}
+
+function resetCartAndClose() {
+  cart = [];
+  updateCartCount();
+  document.getElementById("customer-name").value = "";
+  document.getElementById("customer-address").value = "";
+  toggleCart();
 }

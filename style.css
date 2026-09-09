@@ -130,9 +130,6 @@ main {
   background-color: #fdf2f2;
   color: var(--primary);
 }
-.flavor-btn:active {
-  transform: scale(0.98);
-}
 
 .price-display {
   width: 100%;
@@ -187,13 +184,9 @@ main {
   font-weight: 800;
   font-size: 1rem;
   cursor: pointer;
-  transition: 0.2s;
-}
-.btn-add:active {
-  transform: scale(0.98);
 }
 
-/* Modal do Carrinho */
+/* Modal e Conteúdo Fluido */
 #cart-modal {
   position: fixed;
   top: 0;
@@ -206,40 +199,37 @@ main {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  transition: opacity 0.3s;
 }
 #cart-modal.hidden {
   display: none;
   opacity: 0;
   pointer-events: none;
 }
+
 .cart-content {
   background-color: white;
   width: 100%;
   max-width: 500px;
-  height: auto; /* Permite que o carrinho cresça conforme os itens */
-  max-height: 80vh; /* Impede que o carrinho fique maior que a tela visível */
+  height: auto;
+  max-height: 90vh;
   border-radius: 24px 24px 0 0;
-  padding: 20px 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  overflow-y: auto; /* Transfere a barra de rolagem para o modal inteiro */
-  -webkit-overflow-scrolling: touch; /* Garante rolagem fluida no iPhone */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
-  animation: slideUp 0.3s ease-out;
 }
-
 .cart-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid #f0f0f0;
-  padding-bottom: 16px;
+  padding-bottom: 12px;
   margin-bottom: 16px;
 }
 .cart-header h2 {
   font-size: 1.3rem;
-  color: var(--text-main);
 }
 .close-btn {
   background: #f0f0f0;
@@ -257,23 +247,20 @@ main {
   flex-direction: column;
   gap: 12px;
   padding-bottom: 15px;
-  /* Removemos as travas de altura e flex daqui para deixar o conteúdo livre */
 }
-
 .cart-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #fff;
-  padding: 14px;
+  padding: 12px;
   border-radius: 12px;
   border: 1px solid #f0f0f0;
   border-left: 5px solid var(--primary);
 }
 .cart-item-info h4 {
   font-size: 0.95rem;
-  margin-bottom: 6px;
-  line-height: 1.3;
+  margin-bottom: 4px;
 }
 .cart-item-info p {
   font-size: 0.85rem;
@@ -288,85 +275,218 @@ main {
 .cart-item-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 10px;
+  gap: 10px;
+  margin-top: 8px;
 }
 .cart-item-btn {
   background-color: #f0f0f0;
   border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  font-size: 1.2rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 1.1rem;
   font-weight: bold;
   color: var(--primary);
   cursor: pointer;
 }
-.cart-item-controls span {
-  font-weight: 700;
-  font-size: 1rem;
-  min-width: 20px;
-  text-align: center;
-}
 .cart-item-delete {
   background: none;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   cursor: pointer;
   margin-left: 4px;
-  display: flex;
-  align-items: center;
-}
-.cart-item-delete img {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
 }
 
-.cart-footer {
-  padding-top: 16px;
-  background-color: white;
-  flex-shrink: 0; /* Impede que o rodapé seja esmagado e força o scroll nos itens */
+.delivery-section {
+  margin-bottom: 16px;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 12px;
 }
+.section-title {
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+.delivery-options {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.delivery-btn {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #eee;
+  background: #fff;
+  border-radius: 10px;
+  font-weight: 700;
+  color: var(--text-light);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.85rem;
+}
+.delivery-btn.active {
+  border-color: var(--primary);
+  background-color: #fdf2f2;
+  color: var(--primary);
+}
+.delivery-fee {
+  font-size: 0.75rem;
+  color: var(--success);
+  font-weight: 800;
+}
+
+#pickup-address {
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 12px;
+  border: 1px dashed #ccc;
+}
+#customer-address,
+#customer-name {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  outline: none;
+}
+
 .cart-footer h3 {
   display: flex;
   justify-content: space-between;
-  font-size: 1.2rem;
-  margin-bottom: 16px;
-}
-#customer-name {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 1rem;
+  font-size: 1.1rem;
   margin-bottom: 12px;
-  outline: none;
-  transition: 0.2s;
-}
-#customer-name:focus {
-  border-color: var(--success);
 }
 .checkout-btn {
   width: 100%;
   background-color: var(--success);
   color: white;
   border: none;
-  padding: 16px;
+  padding: 15px;
   border-radius: 12px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 800;
   cursor: pointer;
 }
 
-/* Animações e Erros */
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-  }
+/* Tela do Pix */
+.payment-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+.pix-instructions {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+.pix-qr-container img {
+  width: 160px;
+  height: 160px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+.pix-amount {
+  font-size: 1.1rem;
+  color: var(--text-main);
+}
+.pix-amount strong {
+  color: var(--success);
+}
+
+.pix-copy-box {
+  display: flex;
+  width: 100%;
+  gap: 8px;
+}
+.pix-copy-box input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  text-align: center;
+  background: #f9f9f9;
+}
+.pix-copy-box button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.status-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin: 8px 0;
+}
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ccc;
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
   to {
-    transform: translateY(0);
+    transform: rotate(360deg);
   }
+}
+
+/* Tela de Sucesso */
+.success-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 10px 0;
+}
+.success-icon {
+  font-size: 3rem;
+}
+.success-body h3 {
+  font-size: 1.1rem;
+  color: var(--text-main);
+}
+.time-card {
+  background: #f4fbf7;
+  border: 1px solid #c8e6c9;
+  padding: 16px;
+  border-radius: 12px;
+  width: 100%;
+  color: #2e7d32;
+  font-size: 0.9rem;
+}
+.highlight-time {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--success);
+  margin-top: 6px;
+}
+.highlight-address {
+  font-weight: bold;
+  color: var(--text-main);
+  margin-top: 4px;
+}
+
+.hidden {
+  display: none !important;
 }
 @keyframes shake {
   0%,
@@ -384,80 +504,8 @@ main {
 }
 .btn-error {
   background-color: #e74c3c !important;
-  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
   animation: shake 0.4s ease-in-out;
 }
-#customer-name.input-error {
+.input-error {
   border: 2px solid #e74c3c !important;
-}
-
-/* Opções de Entrega */
-.delivery-section {
-  margin-bottom: 16px;
-  border-top: 1px solid #f0f0f0;
-  padding-top: 12px;
-}
-.section-title {
-  font-size: 1rem;
-  margin-bottom: 10px;
-  color: var(--text-main);
-}
-.delivery-options {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-.delivery-btn {
-  flex: 1;
-  padding: 12px;
-  border: 2px solid #eee;
-  background: #fff;
-  border-radius: 10px;
-  font-weight: 700;
-  color: var(--text-light);
-  cursor: pointer;
-  transition: 0.2s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.9rem;
-}
-.delivery-btn.active {
-  border-color: var(--primary);
-  background-color: #fdf2f2;
-  color: var(--primary);
-}
-.delivery-fee {
-  font-size: 0.8rem;
-  color: var(--success);
-  font-weight: 800;
-}
-
-#pickup-address {
-  background: #f9f9f9;
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  color: var(--text-light);
-  line-height: 1.4;
-  margin-bottom: 12px;
-  border: 1px dashed #ccc;
-}
-#customer-address {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  font-size: 1rem;
-  margin-bottom: 12px;
-  outline: none;
-  transition: 0.2s;
-}
-#customer-address:focus {
-  border-color: var(--success);
-}
-
-.hidden {
-  display: none !important;
 }
