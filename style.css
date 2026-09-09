@@ -217,9 +217,9 @@ main {
   background-color: white;
   width: 100%;
   max-width: 500px;
-  height: 85vh;
+  height: 95vh; /* Aumentado de 85vh para 95vh para dar mais respiro */
   border-radius: 24px 24px 0 0;
-  padding: 24px 20px;
+  padding: 20px 20px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
@@ -249,13 +249,15 @@ main {
 }
 
 #cart-items-container {
-  flex: 1;
+  flex: 1 1 auto;
   overflow-y: auto;
+  min-height: 260px; /* Garante que o bloco nunca fique menor que 1 item inteiro */
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding-bottom: 20px;
+  padding-bottom: 15px;
 }
+
 .cart-item {
   display: flex;
   justify-content: space-between;
@@ -322,6 +324,7 @@ main {
 .cart-footer {
   padding-top: 16px;
   background-color: white;
+  flex-shrink: 0; /* Impede que o rodapé seja esmagado e força o scroll nos itens */
 }
 .cart-footer h3 {
   display: flex;
@@ -384,4 +387,75 @@ main {
 }
 #customer-name.input-error {
   border: 2px solid #e74c3c !important;
+}
+
+/* Opções de Entrega */
+.delivery-section {
+  margin-bottom: 16px;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 12px;
+}
+.section-title {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: var(--text-main);
+}
+.delivery-options {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.delivery-btn {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #eee;
+  background: #fff;
+  border-radius: 10px;
+  font-weight: 700;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9rem;
+}
+.delivery-btn.active {
+  border-color: var(--primary);
+  background-color: #fdf2f2;
+  color: var(--primary);
+}
+.delivery-fee {
+  font-size: 0.8rem;
+  color: var(--success);
+  font-weight: 800;
+}
+
+#pickup-address {
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  line-height: 1.4;
+  margin-bottom: 12px;
+  border: 1px dashed #ccc;
+}
+#customer-address {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 1rem;
+  margin-bottom: 12px;
+  outline: none;
+  transition: 0.2s;
+}
+#customer-address:focus {
+  border-color: var(--success);
+}
+
+.hidden {
+  display: none !important;
 }

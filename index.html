@@ -8,7 +8,7 @@
   </head>
   <body>
     <header>
-      <h1>Monte sua Pipoca Gourmet</h1>
+      <h1>Cardápio do Vitinho</h1>
       <div id="cart-icon" onclick="toggleCart()">
         🛒 <span id="cart-count">0</span>
       </div>
@@ -36,7 +36,7 @@
         </div>
 
         <div id="flavors-container" class="flavors-grid">
-          <!-- Sabores gerados dinamicamente pelo JS -->
+          <!-- Sabores gerados via JavaScript -->
         </div>
 
         <div class="price-display">
@@ -67,7 +67,37 @@
           <button class="close-btn" onclick="toggleCart()">X</button>
         </div>
         <div id="cart-items-container"></div>
+
         <div class="cart-footer">
+          <div class="delivery-section">
+            <h3 class="section-title">Como deseja receber?</h3>
+            <div class="delivery-options">
+              <button
+                id="btn-delivery"
+                class="delivery-btn active"
+                onclick="setDeliveryMode('delivery')"
+              >
+                Entrega Padrão <span class="delivery-fee">+ R$ 10,00</span>
+              </button>
+              <button
+                id="btn-pickup"
+                class="delivery-btn"
+                onclick="setDeliveryMode('pickup')"
+              >
+                Retirar no Local
+              </button>
+            </div>
+            <div id="pickup-address" class="hidden">
+              📍 <strong>Endereço para retirada:</strong><br />
+              Rua João Antônio Tornich 108, Jardim São Rafael
+            </div>
+            <input
+              type="text"
+              id="customer-address"
+              placeholder="Qual o endereço de entrega?"
+            />
+          </div>
+
           <h3>Total: <span id="cart-total">R$ 0,00</span></h3>
           <input
             type="text"
