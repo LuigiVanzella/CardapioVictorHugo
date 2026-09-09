@@ -4,69 +4,58 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cardápio do Vitinho</title>
-    <!-- Conexão com o CSS -->
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <header>
-      <h1>Cardápio do Vitinho</h1>
+      <h1>Monte sua Pipoca Gourmet</h1>
       <div id="cart-icon" onclick="toggleCart()">
         🛒 <span id="cart-count">0</span>
       </div>
     </header>
 
     <main>
-      <div
-        class="card"
-        data-id="1"
-        data-name="Pipoca de Caramelo"
-        data-price="12.00"
-      >
+      <div class="bucket-configurator">
         <img
-          src="https://via.placeholder.com/150/FFB347/FFFFFF?text=Pipoca"
-          alt="Pipoca de Caramelo"
+          class="bucket-image"
+          src="pipoca_gourme.png"
+          alt="Balde de Pipoca"
         />
-        <div class="info">
-          <h2>Pipoca de Caramelo</h2>
-          <p class="price">R$ 12,00</p>
-          <p class="desc">
-            Pipoca artesanal crocante com cobertura de caramelo.
-          </p>
-          <div class="actions">
-            <div class="qtd-selector">
-              <button class="btn-minus" onclick="changeQtd(this, -1)">-</button>
-              <span class="qtd-value">1</span>
-              <button class="btn-plus" onclick="changeQtd(this, 1)">+</button>
-            </div>
-            <button class="btn-add" onclick="addToCart(this)">Adicionar</button>
-          </div>
-        </div>
-      </div>
 
-      <div
-        class="card"
-        data-id="2"
-        data-name="Pipoca de Chocolate"
-        data-price="15.00"
-      >
-        <img
-          src="https://via.placeholder.com/150/8B4513/FFFFFF?text=Pipoca"
-          alt="Pipoca de Chocolate"
-        />
-        <div class="info">
-          <h2>Pipoca de Chocolate Trufado</h2>
-          <p class="price">R$ 15,00</p>
-          <p class="desc">
-            Cacau 50% e um toque especial de chocolate meio amargo.
-          </p>
-          <div class="actions">
-            <div class="qtd-selector">
-              <button class="btn-minus" onclick="changeQtd(this, -1)">-</button>
-              <span class="qtd-value">1</span>
-              <button class="btn-plus" onclick="changeQtd(this, 1)">+</button>
-            </div>
-            <button class="btn-add" onclick="addToCart(this)">Adicionar</button>
+        <div class="mode-selector">
+          <button
+            id="btn-mode-1"
+            class="mode-btn active"
+            onclick="setBucketMode(1)"
+          >
+            1 Sabor
+          </button>
+          <button id="btn-mode-2" class="mode-btn" onclick="setBucketMode(2)">
+            2 Sabores
+          </button>
+        </div>
+
+        <div id="flavors-container" class="flavors-grid">
+          <!-- Sabores gerados dinamicamente pelo JS -->
+        </div>
+
+        <div class="price-display">
+          <h2 id="display-price">R$ 25,00</h2>
+        </div>
+
+        <div class="actions">
+          <div class="qtd-selector">
+            <button class="btn-minus" onclick="changeBucketQtd(-1)">-</button>
+            <span id="display-qtd" class="qtd-value">1</span>
+            <button class="btn-plus" onclick="changeBucketQtd(1)">+</button>
           </div>
+          <button
+            id="btn-add-bucket"
+            class="btn-add"
+            onclick="addBucketToCart()"
+          >
+            Adicionar
+          </button>
         </div>
       </div>
     </main>
@@ -93,7 +82,6 @@
       </div>
     </div>
 
-    <!-- Conexão com o JavaScript -->
     <script src="script.js"></script>
   </body>
 </html>

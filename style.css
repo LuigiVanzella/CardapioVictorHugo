@@ -1,31 +1,25 @@
-/* ==========================================================================
-   1. VARIÁVEIS & RESET GLOBAL
-   ========================================================================== */
 :root {
   --primary: #d32f2f;
   --success: #27ae60;
   --bg-color: #fcf9f2;
   --text-main: #222;
   --text-light: #666;
+  --accent: #f1c40f;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: "Segoe UI", sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
-
 body {
   background-color: var(--bg-color);
   color: var(--text-main);
   padding-bottom: 30px;
 }
 
-/* ==========================================================================
-   2. CABEÇALHO & ÍCONE DO CARRINHO
-   ========================================================================== */
 header {
   background-color: var(--primary);
   padding: 16px 20px;
@@ -37,23 +31,19 @@ header {
   top: 0;
   z-index: 100;
 }
-
 header h1 {
-  color: #ffffff;
+  color: #fff;
   font-size: 1.2rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
-
 #cart-icon {
   font-size: 1.6rem;
   position: relative;
   cursor: pointer;
   padding: 5px;
 }
-
 #cart-count {
-  background-color: #f1c40f;
+  background-color: var(--accent);
   color: #333;
   font-size: 0.75rem;
   font-weight: 900;
@@ -69,121 +59,141 @@ header h1 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* ==========================================================================
-   3. CARDÁPIO / CARDS DE PRODUTO
-   ========================================================================== */
 main {
   padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
   max-width: 500px;
   margin: 0 auto;
 }
 
-.card {
-  display: flex;
-  background-color: #ffffff;
+/* Configurador do Balde */
+.bucket-configurator {
+  background-color: #fff;
   border-radius: 16px;
+  padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-  align-items: stretch;
-}
-
-.card img {
-  width: 100px;
-  min-height: 100%;
-  object-fit: cover;
-  background-color: #eee;
-}
-
-.info {
-  padding: 14px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 8px;
+  gap: 20px;
+  align-items: center;
+}
+.bucket-image {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.mode-selector {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  background: #f5f5f5;
+  padding: 6px;
+  border-radius: 12px;
+}
+.mode-btn {
   flex: 1;
-}
-
-.info h2 {
-  font-size: 1.05rem;
-  color: var(--text-main);
-  line-height: 1.2;
-}
-
-.info .price {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: var(--success);
-}
-
-.info .desc {
-  font-size: 0.85rem;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-weight: bold;
   color: var(--text-light);
-  line-height: 1.3;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.mode-btn.active {
+  background: #fff;
+  color: var(--primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Controles de Quantidade nos Cards */
+.flavors-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+.flavor-btn {
+  padding: 14px 10px;
+  border: 2px solid #eee;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: 0.2s;
+}
+.flavor-btn.active {
+  border-color: var(--primary);
+  background-color: #fdf2f2;
+  color: var(--primary);
+}
+.flavor-btn:active {
+  transform: scale(0.98);
+}
+
+.price-display {
+  width: 100%;
+  text-align: center;
+  border-top: 2px dashed #eee;
+  padding-top: 16px;
+}
+.price-display h2 {
+  font-size: 1.8rem;
+  color: var(--success);
+  font-weight: 900;
+}
+
 .actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 8px;
-  gap: 10px;
+  width: 100%;
+  gap: 12px;
 }
-
 .qtd-selector {
   display: flex;
   align-items: center;
   border: 1.5px solid #eee;
-  border-radius: 8px;
-  overflow: hidden;
-  height: 38px;
+  border-radius: 10px;
+  height: 45px;
 }
-
 .qtd-selector button {
   background-color: #fff;
   border: none;
-  width: 36px;
+  width: 40px;
   height: 100%;
   font-size: 1.3rem;
   cursor: pointer;
   color: var(--primary);
   font-weight: bold;
+  border-radius: 8px;
 }
-
-.qtd-selector button:active {
-  background-color: #f0f0f0;
-}
-
 .qtd-selector .qtd-value {
-  width: 24px;
+  width: 30px;
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 700;
 }
-
 .btn-add {
   background-color: var(--primary);
   color: white;
   border: none;
-  height: 38px;
+  height: 45px;
   flex: 1;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.9rem;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: 0.2s;
 }
-
 .btn-add:active {
-  background-color: #b71c1c;
+  transform: scale(0.98);
 }
 
-/* ==========================================================================
-   4. MODAL DO CARRINHO (ESTRUTURA)
-   ========================================================================== */
+/* Modal do Carrinho */
 #cart-modal {
   position: fixed;
   top: 0;
@@ -198,13 +208,11 @@ main {
   align-items: flex-end;
   transition: opacity 0.3s;
 }
-
 #cart-modal.hidden {
   display: none;
   opacity: 0;
   pointer-events: none;
 }
-
 .cart-content {
   background-color: white;
   width: 100%;
@@ -217,7 +225,6 @@ main {
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
   animation: slideUp 0.3s ease-out;
 }
-
 .cart-header {
   display: flex;
   justify-content: space-between;
@@ -226,27 +233,21 @@ main {
   padding-bottom: 16px;
   margin-bottom: 16px;
 }
-
 .cart-header h2 {
   font-size: 1.3rem;
   color: var(--text-main);
 }
-
 .close-btn {
   background: #f0f0f0;
   border: none;
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  font-size: 1rem;
   font-weight: bold;
   color: var(--text-light);
   cursor: pointer;
 }
 
-/* ==========================================================================
-   5. ITENS LISTADOS NO CARRINHO
-   ========================================================================== */
 #cart-items-container {
   flex: 1;
   overflow-y: auto;
@@ -255,7 +256,6 @@ main {
   gap: 12px;
   padding-bottom: 20px;
 }
-
 .cart-item {
   display: flex;
   justify-content: space-between;
@@ -266,31 +266,27 @@ main {
   border: 1px solid #f0f0f0;
   border-left: 5px solid var(--primary);
 }
-
 .cart-item-info h4 {
-  font-size: 1rem;
+  font-size: 0.95rem;
   margin-bottom: 6px;
+  line-height: 1.3;
 }
-
 .cart-item-info p {
   font-size: 0.85rem;
   color: var(--text-light);
 }
-
 .cart-item-price {
   font-weight: 800;
   font-size: 1.05rem;
   color: var(--success);
 }
 
-/* Controles Internos do Item no Carrinho */
 .cart-item-controls {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-top: 10px;
 }
-
 .cart-item-btn {
   background-color: #f0f0f0;
   border: none;
@@ -302,54 +298,37 @@ main {
   color: var(--primary);
   cursor: pointer;
 }
-
-.cart-item-btn:active {
-  background-color: #e0e0e0;
-}
-
 .cart-item-controls span {
   font-weight: 700;
   font-size: 1rem;
   min-width: 20px;
   text-align: center;
 }
-
 .cart-item-delete {
   background: none;
   border: none;
   font-size: 1.2rem;
   cursor: pointer;
   margin-left: 4px;
-  color: #e74c3c;
   display: flex;
   align-items: center;
 }
-
 .cart-item-delete img {
   width: 20px;
   height: 20px;
   object-fit: contain;
 }
 
-.cart-item-delete:active {
-  transform: scale(0.9);
-}
-
-/* ==========================================================================
-   6. RODAPÉ DO CARRINHO & CHECKOUT
-   ========================================================================== */
 .cart-footer {
   padding-top: 16px;
   background-color: white;
 }
-
 .cart-footer h3 {
   display: flex;
   justify-content: space-between;
   font-size: 1.2rem;
   margin-bottom: 16px;
 }
-
 #customer-name {
   width: 100%;
   padding: 14px;
@@ -358,12 +337,11 @@ main {
   font-size: 1rem;
   margin-bottom: 12px;
   outline: none;
+  transition: 0.2s;
 }
-
 #customer-name:focus {
   border-color: var(--success);
 }
-
 .checkout-btn {
   width: 100%;
   background-color: var(--success);
@@ -374,16 +352,9 @@ main {
   font-size: 1.1rem;
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
 }
 
-.checkout-btn:active {
-  transform: scale(0.98);
-}
-
-/* ==========================================================================
-   7. ANIMAÇÕES & VALIDAÇÕES DE ERRO
-   ========================================================================== */
+/* Animações e Erros */
 @keyframes slideUp {
   from {
     transform: translateY(100%);
@@ -392,18 +363,6 @@ main {
     transform: translateY(0);
   }
 }
-
-@keyframes jumpIn {
-  0% {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
 @keyframes shake {
   0%,
   100% {
@@ -418,14 +377,11 @@ main {
     transform: translateX(8px);
   }
 }
-
-/* Estados visuais de Erro */
-.checkout-btn.btn-error {
+.btn-error {
   background-color: #e74c3c !important;
   box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
   animation: shake 0.4s ease-in-out;
 }
-
 #customer-name.input-error {
   border: 2px solid #e74c3c !important;
 }
