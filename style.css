@@ -217,14 +217,18 @@ main {
   background-color: white;
   width: 100%;
   max-width: 500px;
-  height: 95vh; /* Aumentado de 85vh para 95vh para dar mais respiro */
+  height: auto; /* Permite que o carrinho cresça conforme os itens */
+  max-height: 85vh; /* Impede que o carrinho fique maior que a tela visível */
   border-radius: 24px 24px 0 0;
   padding: 20px 20px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto; /* Transfere a barra de rolagem para o modal inteiro */
+  -webkit-overflow-scrolling: touch; /* Garante rolagem fluida no iPhone */
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
   animation: slideUp 0.3s ease-out;
 }
+
 .cart-header {
   display: flex;
   justify-content: space-between;
@@ -249,13 +253,11 @@ main {
 }
 
 #cart-items-container {
-  flex: 1 1 auto;
-  overflow-y: auto;
-  min-height: 150px; /* Garante que o bloco nunca fique menor que 1 item inteiro */
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding-bottom: 15px;
+  /* Removemos as travas de altura e flex daqui para deixar o conteúdo livre */
 }
 
 .cart-item {
