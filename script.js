@@ -215,7 +215,9 @@ function showStep(stepId) {
 }
 
 /* FLUXO DO PIX E PAGAMENTO */
-function goToPaymentStep() {
+let paymentCheckInterval = null;
+
+async function goToPaymentStep() {
   let checkoutBtn = document.querySelector("#step-cart .checkout-btn");
   if (cart.length === 0) {
     checkoutBtn.classList.add("btn-error");
@@ -242,9 +244,58 @@ function goToPaymentStep() {
     return;
   }
 
-  document.getElementById("pix-display-total").innerText =
-    `R$ ${finalCalculatedTotal.toFixed(2).replace(".", ",")}`;
-  showStep("step-payment");
+  checkoutBtn.innerText = "Gerando Pix...";
+  checkoutBtn.disabled = true;
+
+  try {
+    const response = await fetch("/api/create-pix", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amount: finalCalculatedTotal,
+        customerName: customerName,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.paymentId) {
+      document.getElementById("pix-qr-code").src =
+        `data:image/png;base64,${data.qrCodeBase64}`;
+      document.getElementById("pix-key-input").value = data.qrCodeCopyPaste;
+      document.getElementById("pix-display-total").innerText =
+        `R$ ${finalCalculatedTotal.toFixed(2).replace(".", ",")}`;
+
+      showStep("step-payment");
+
+      startPaymentCheck(data.paymentId);
+    } else {
+      alert("Erro ao gerar Pix. Tente novamente.");
+    }
+  } catch (error) {
+    alert("Não foi possível conectar ao servidor de pagamento.");
+  } finally {
+    checkoutBtn.innerText = "Ir para Pagamento (Pix)";
+    checkoutBtn.disabled = false;
+  }
+}
+
+function startPaymentCheck(paymentId) {
+  if (paymentCheckInterval) clearInterval(paymentCheckInterval);
+
+  paymentCheckInterval = setInterval(async () => {
+    try {
+      const response = await fetch(`/api/check-payment/${paymentId}`);
+      const data = await response.json();
+
+      if (data.status === "approved") {
+        clearInterval(paymentCheckInterval);
+        confirmPaymentAndFinish();
+      }
+    } catch (error) {
+      console.error("Erro ao verificar status do pagamento:", error);
+    }
+  }, 3000);
 }
 
 function copyPixKey() {
@@ -255,7 +306,6 @@ function copyPixKey() {
 }
 
 function confirmPaymentAndFinish() {
-  // Exibe a tela final para o usuário no site
   if (deliveryMode === "delivery") {
     document.getElementById("delivery-time-info").classList.remove("hidden");
     document.getElementById("pickup-info").classList.add("hidden");
@@ -265,8 +315,6 @@ function confirmPaymentAndFinish() {
   }
 
   showStep("step-success");
-
-  // Envia a notificação com status PAGO para a cozinha via WhatsApp
   sendWhatsAppNotification();
 }
 
