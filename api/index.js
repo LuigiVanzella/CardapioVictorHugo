@@ -11,24 +11,35 @@ const client = new MercadoPagoConfig({
 });
 const payment = new Payment(client);
 
-// 1. Tabela de preços blindada no servidor
+// Tabela de preços blindada no servidor
 const PRICING = {
   base: 25.00,
   premium: 30.00,
   deliveryFee: 10.00
 };
 
-// 2. ROTA DE GERAR PIX (Atualizada com a matemática segura)
 app.post('/api/create-pix', async (req, res) => {
   try {
     const { cartItems, deliveryMode, customerName } = req.body;
 
+    // ALTERAÇÃO 1: Impede requisições com carrinho vazio ou em formato inválido
+    if (!Array.isArray(cartItems) || cartItems.length === 0) {
+      return res.status(400).json({ error: 'O carrinho está vazio ou em formato inválido.' });
+    }
+
     let serverCalculatedTotal = 0;
 
+    // ALTERAÇÃO 2: Sanitização estrita de quantidade e ID contra injeções
     cartItems.forEach(item => {
-      const isPremium = item.id.includes('nutella');
+      // Força a quantidade a ser estritamente um inteiro maior ou igual a 1
+      const safeQtd = Math.max(1, Math.floor(Number(item.qtd)) || 1);
+      
+      // Valida o ID para evitar erros de tipo
+      const itemId = typeof item.id === 'string' ? item.id : '';
+      const isPremium = itemId.includes('nutella');
       const itemPrice = isPremium ? PRICING.premium : PRICING.base;
-      serverCalculatedTotal += (itemPrice * item.qtd);
+
+      serverCalculatedTotal += (itemPrice * safeQtd);
     });
 
     if (deliveryMode === 'delivery') {
@@ -61,7 +72,6 @@ app.post('/api/create-pix', async (req, res) => {
   }
 });
 
-// 3. ROTA DE VERIFICAR PAGAMENTO (Mantida igual)
 app.get('/api/check-payment/:id', async (req, res) => {
   try {
     const paymentId = req.params.id;
