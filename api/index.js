@@ -18,23 +18,19 @@ const PRICING = {
   deliveryFee: 10.00
 };
 
+// ROTA 1: Criar Cobrança Pix
 app.post('/api/create-pix', async (req, res) => {
   try {
     const { cartItems, deliveryMode, customerName } = req.body;
 
-    // ALTERAÇÃO 1: Impede requisições com carrinho vazio ou em formato inválido
     if (!Array.isArray(cartItems) || cartItems.length === 0) {
       return res.status(400).json({ error: 'O carrinho está vazio ou em formato inválido.' });
     }
 
     let serverCalculatedTotal = 0;
 
-    // ALTERAÇÃO 2: Sanitização estrita de quantidade e ID contra injeções
     cartItems.forEach(item => {
-      // Força a quantidade a ser estritamente um inteiro maior ou igual a 1
       const safeQtd = Math.max(1, Math.floor(Number(item.qtd)) || 1);
-      
-      // Valida o ID para evitar erros de tipo
       const itemId = typeof item.id === 'string' ? item.id : '';
       const isPremium = itemId.includes('nutella');
       const itemPrice = isPremium ? PRICING.premium : PRICING.base;
@@ -72,6 +68,7 @@ app.post('/api/create-pix', async (req, res) => {
   }
 });
 
+// ROTA 2: Checagem manual de status (usada pelo site via polling)
 app.get('/api/check-payment/:id', async (req, res) => {
   try {
     const paymentId = req.params.id;
@@ -84,4 +81,29 @@ app.get('/api/check-payment/:id', async (req, res) => {
   }
 });
 
+// ROTA 3: Webhook (notificação automática do Mercado Pago)
+app.post('/api/webhook', async (req, res) => {
+  try {
+    const paymentId = req.body?.data?.id || req.query['data.id'];
+    const type = req.body?.type || req.query?.type;
+
+    if (paymentId && (type === 'payment' || req.body?.action === 'payment.updated')) {
+      const paymentData = await payment.get({ id: paymentId });
+      const status = paymentData.status;
+
+      console.log(`[WEBHOOK] Pagamento ID ${paymentId} atualizado para: ${status}`);
+
+      if (status === 'approved') {
+        // O pagamento foi aprovado!
+      }
+    }
+
+    return res.status(200).send('OK');
+  } catch (error) {
+    console.error('Erro ao processar Webhook:', error);
+    return res.status(200).send('OK');
+  }
+});
+
+// O module.exports DEVE VIR SEMPRE POR ÚLTIMO
 module.exports = app;
