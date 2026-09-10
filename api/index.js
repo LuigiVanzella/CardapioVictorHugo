@@ -44,7 +44,7 @@ app.post('/api/create-pix', async (req, res) => {
       serverCalculatedTotal += PRICING.deliveryFee;
     }
 
-    // Salva os dados do pedido dentro dos metadados do pagamento do Mercado Pago
+    // Salva os dados do pedido nos metadados do Mercado Pago
     const response = await payment.create({
       body: {
         transaction_amount: serverCalculatedTotal, 
@@ -77,7 +77,7 @@ app.post('/api/create-pix', async (req, res) => {
   }
 });
 
-// ROTA 2: Checagem manual de status
+// ROTA 2: Checagem de status
 app.get('/api/check-payment/:id', async (req, res) => {
   try {
     const paymentId = req.params.id;
@@ -90,7 +90,7 @@ app.get('/api/check-payment/:id', async (req, res) => {
   }
 });
 
-// ROTA 3: Webhook + Disparo automático para o Telegram
+// ROTA 3: Webhook + Notificação do Telegram
 app.post('/api/webhook', async (req, res) => {
   try {
     const paymentId = req.body?.data?.id || req.query['data.id'];
@@ -110,7 +110,6 @@ app.post('/api/webhook', async (req, res) => {
         const orderItems = metadata.order_items || 'Itens não especificados';
         const totalAmount = paymentData.transaction_amount || 0;
 
-        // Monta a mensagem formatada para o Telegram
         const telegramMessage = 
           `🚨 *NOVO PEDIDO CONFIRMADO (PIX)* 🚨\n\n` +
           `👤 *Cliente:* ${customerName}\n` +
@@ -145,4 +144,5 @@ app.post('/api/webhook', async (req, res) => {
   }
 });
 
+// O module.exports precisa estar na última linha
 module.exports = app;
