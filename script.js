@@ -248,14 +248,18 @@ async function goToPaymentStep() {
   checkoutBtn.disabled = true;
 
   try {
+    // Substitua o trecho do fetch no script.js por este:
     const response = await fetch("/api/create-pix", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        amount: finalCalculatedTotal,
+        cartItems: cart,
+        deliveryMode: deliveryMode,
         customerName: customerName,
+        customerAddress: customerAddress // Envia o endereço para o backend salvar
       }),
     });
+
 
     const data = await response.json();
 
