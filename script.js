@@ -4,6 +4,7 @@ let selectedFlavors = [];
 let currentQtd = 1;
 let deliveryMode = "delivery";
 let finalCalculatedTotal = 0;
+let paymentCheckInterval = null;
 
 const FLAVORS = [
   { id: "bueno", label: "Bueno" },
@@ -16,10 +17,10 @@ const FLAVORS = [
 document.addEventListener("DOMContentLoaded", () => renderFlavors());
 
 function setBucketMode(mode) {
-  bucketMode = mode;
+  bucketMode = mode === 2 ? 2 : 1;
   selectedFlavors = [];
-  document.getElementById("btn-mode-1").classList.toggle("active", mode === 1);
-  document.getElementById("btn-mode-2").classList.toggle("active", mode === 2);
+  document.getElementById("btn-mode-1").classList.toggle("active", bucketMode === 1);
+  document.getElementById("btn-mode-2").classList.toggle("active", bucketMode === 2);
   renderFlavors();
   updatePrice();
 }
@@ -59,8 +60,8 @@ function updatePrice() {
 }
 
 function changeBucketQtd(amount) {
-  currentQtd += amount;
-  if (currentQtd < 1) currentQtd = 1;
+  let step = Math.floor(Number(amount)) || 0;
+  currentQtd = Math.max(1, (Math.floor(Number(currentQtd)) || 1) + step);
   document.getElementById("display-qtd").innerText = currentQtd;
 }
 
@@ -84,7 +85,7 @@ function addBucketToCart() {
 
   let price = selectedFlavors.includes("nutella") ? 30 : 25;
   let flavorNames = selectedFlavors.map(
-    (id) => FLAVORS.find((f) => f.id === id).label,
+    (id) => FLAVORS.find((f) => f.id === id).label
   );
   let itemName =
     bucketMode === 1
@@ -92,15 +93,19 @@ function addBucketToCart() {
       : `Balde - 1/2 ${flavorNames[0]} e 1/2 ${flavorNames[1]}`;
   let cartItemId = "balde-" + selectedFlavors.sort().join("-");
 
+  let safeQtd = Math.max(1, Math.floor(Number(currentQtd)) || 1);
+
   let existingItem = cart.find((item) => item.id === cartItemId);
-  if (existingItem) existingItem.qtd += currentQtd;
-  else
+  if (existingItem) {
+    existingItem.qtd += safeQtd;
+  } else {
     cart.push({
       id: cartItemId,
       name: itemName,
       price: price,
-      qtd: currentQtd,
+      qtd: safeQtd,
     });
+  }
 
   selectedFlavors = [];
   currentQtd = 1;
@@ -118,7 +123,7 @@ function addBucketToCart() {
 }
 
 function updateCartCount() {
-  let totalItems = cart.reduce((sum, item) => sum + item.qtd, 0);
+  let totalItems = cart.reduce((sum, item) => sum + (Math.max(0, Math.floor(Number(item.qtd))) || 0), 0);
   document.getElementById("cart-count").innerText = totalItems;
 }
 
@@ -132,15 +137,15 @@ function toggleCart() {
 }
 
 function setDeliveryMode(mode) {
-  deliveryMode = mode;
+  deliveryMode = mode === "pickup" ? "pickup" : "delivery";
   document
     .getElementById("btn-delivery")
-    .classList.toggle("active", mode === "delivery");
+    .classList.toggle("active", deliveryMode === "delivery");
   document
     .getElementById("btn-pickup")
-    .classList.toggle("active", mode === "pickup");
+    .classList.toggle("active", deliveryMode === "pickup");
 
-  if (mode === "pickup") {
+  if (deliveryMode === "pickup") {
     document.getElementById("pickup-address").classList.remove("hidden");
     document.getElementById("customer-address").classList.add("hidden");
   } else {
@@ -165,7 +170,8 @@ function renderCartItems() {
   }
 
   cart.forEach((item) => {
-    let itemTotal = item.price * item.qtd;
+    let safeQtd = Math.max(1, Math.floor(Number(item.qtd)) || 1);
+    let itemTotal = item.price * safeQtd;
     totalAmount += itemTotal;
     container.innerHTML += `
       <div class="cart-item">
@@ -174,7 +180,7 @@ function renderCartItems() {
               <p style="color: var(--text-light); font-size: 0.85rem;">R$ ${item.price.toFixed(2).replace(".", ",")} cada</p>
               <div class="cart-item-controls">
                   <button class="cart-item-btn" onclick="updateCartItemQtd('${item.id}', -1)">-</button>
-                  <span>${item.qtd}</span>
+                  <span>${safeQtd}</span>
                   <button class="cart-item-btn" onclick="updateCartItemQtd('${item.id}', 1)">+</button>
                   <button class="cart-item-delete" onclick="removeCartItem('${item.id}')">🗑️</button>
               </div>
@@ -191,9 +197,11 @@ function renderCartItems() {
 function updateCartItemQtd(id, amount) {
   let item = cart.find((i) => i.id === id);
   if (item) {
-    item.qtd += amount;
-    if (item.qtd <= 0) removeCartItem(id);
-    else {
+    let step = Math.floor(Number(amount)) || 0;
+    item.qtd = (Math.floor(Number(item.qtd)) || 0) + step;
+    if (item.qtd <= 0) {
+      removeCartItem(id);
+    } else {
       renderCartItems();
       updateCartCount();
     }
@@ -215,8 +223,6 @@ function showStep(stepId) {
 }
 
 /* FLUXO DO PIX E PAGAMENTO */
-let paymentCheckInterval = null;
-
 async function goToPaymentStep() {
   let checkoutBtn = document.querySelector("#step-cart .checkout-btn");
   if (cart.length === 0) {
@@ -248,7 +254,6 @@ async function goToPaymentStep() {
   checkoutBtn.disabled = true;
 
   try {
-    // Substitua o trecho do fetch no script.js por este:
     const response = await fetch("/api/create-pix", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -256,10 +261,9 @@ async function goToPaymentStep() {
         cartItems: cart,
         deliveryMode: deliveryMode,
         customerName: customerName,
-        customerAddress: customerAddress // Envia o endereço para o backend salvar
+        customerAddress: customerAddress,
       }),
     });
-
 
     const data = await response.json();
 
@@ -267,11 +271,12 @@ async function goToPaymentStep() {
       document.getElementById("pix-qr-code").src =
         `data:image/png;base64,${data.qrCodeBase64}`;
       document.getElementById("pix-key-input").value = data.qrCodeCopyPaste;
+
+      finalCalculatedTotal = Number(data.safeTotal) || finalCalculatedTotal;
       document.getElementById("pix-display-total").innerText =
         `R$ ${finalCalculatedTotal.toFixed(2).replace(".", ",")}`;
 
       showStep("step-payment");
-
       startPaymentCheck(data.paymentId);
     } else {
       alert("Erro ao gerar Pix. Tente novamente.");
@@ -319,42 +324,6 @@ function confirmPaymentAndFinish() {
   }
 
   showStep("step-success");
-  sendWhatsAppNotification();
-}
-
-function sendWhatsAppNotification() {
-  let customerName = document.getElementById("customer-name").value.trim();
-  let customerAddress = document
-    .getElementById("customer-address")
-    .value.trim();
-
-  let hour = new Date().getHours();
-  let greeting =
-    hour >= 5 && hour < 12
-      ? "Bom dia"
-      : hour >= 12 && hour < 18
-        ? "Boa tarde"
-        : "Boa noite";
-
-  let message = `${greeting} Victor Hugo!\nNovo pedido recebido pelo site:\n`;
-  message += `*STATUS:* ✅ PAGAMENTO CONFIRMADO (PIX)\n`;
-  message += `*Cliente:* ${customerName}\n`;
-
-  cart.forEach((item) => {
-    message += `----------------\n${item.qtd}x ${item.name} (R$ ${item.price.toFixed(2).replace(".", ",")})\n`;
-  });
-
-  message += `----------------\n*Método de Entrega:* ${deliveryMode === "delivery" ? "Entrega Padrão (+ R$ 10,00)" : "Retirada no Local"}\n`;
-  if (deliveryMode === "delivery") {
-    message += `*Endereço:* ${customerAddress}\n`;
-  }
-
-  message += `----------------\n*Valor Total Pago:* R$ ${finalCalculatedTotal.toFixed(2).replace(".", ",")}`;
-
-  window.open(
-    `https://wa.me/5511949497778?text=${encodeURIComponent(message)}`,
-    "_blank",
-  );
 }
 
 function resetCartAndClose() {
