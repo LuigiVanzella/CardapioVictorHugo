@@ -5,6 +5,7 @@ let currentQtd = 1;
 let deliveryMode = "delivery";
 let finalCalculatedTotal = 0;
 let paymentCheckInterval = null;
+let currentPaymentId = null;
 
 const FLAVORS = [
   { id: "bueno", label: "Bueno" },
@@ -19,8 +20,12 @@ document.addEventListener("DOMContentLoaded", () => renderFlavors());
 function setBucketMode(mode) {
   bucketMode = mode === 2 ? 2 : 1;
   selectedFlavors = [];
-  document.getElementById("btn-mode-1").classList.toggle("active", bucketMode === 1);
-  document.getElementById("btn-mode-2").classList.toggle("active", bucketMode === 2);
+  document
+    .getElementById("btn-mode-1")
+    .classList.toggle("active", bucketMode === 1);
+  document
+    .getElementById("btn-mode-2")
+    .classList.toggle("active", bucketMode === 2);
   renderFlavors();
   updatePrice();
 }
@@ -85,7 +90,7 @@ function addBucketToCart() {
 
   let price = selectedFlavors.includes("nutella") ? 30 : 25;
   let flavorNames = selectedFlavors.map(
-    (id) => FLAVORS.find((f) => f.id === id).label
+    (id) => FLAVORS.find((f) => f.id === id).label,
   );
   let itemName =
     bucketMode === 1
@@ -123,7 +128,10 @@ function addBucketToCart() {
 }
 
 function updateCartCount() {
-  let totalItems = cart.reduce((sum, item) => sum + (Math.max(0, Math.floor(Number(item.qtd))) || 0), 0);
+  let totalItems = cart.reduce(
+    (sum, item) => sum + (Math.max(0, Math.floor(Number(item.qtd))) || 0),
+    0,
+  );
   document.getElementById("cart-count").innerText = totalItems;
 }
 
@@ -268,6 +276,8 @@ async function goToPaymentStep() {
     const data = await response.json();
 
     if (data.paymentId) {
+      currentPaymentId = data.paymentId;
+
       document.getElementById("pix-qr-code").src =
         `data:image/png;base64,${data.qrCodeBase64}`;
       document.getElementById("pix-key-input").value = data.qrCodeCopyPaste;
@@ -312,6 +322,43 @@ function copyPixKey() {
   input.select();
   document.execCommand("copy");
   alert("Chave Pix copiada!");
+}
+
+async function checkPaymentManually() {
+  let btn = document.getElementById("btn-confirm-pay");
+
+  if (!currentPaymentId) {
+    alert("Não foi possível identificar seu pagamento. Tente novamente.");
+    return;
+  }
+
+  let originalText = btn.innerText;
+  btn.disabled = true;
+  btn.innerText = "Verificando...";
+
+  try {
+    const response = await fetch(`/api/check-payment/${currentPaymentId}`);
+    const data = await response.json();
+
+    if (data.status === "approved") {
+      if (paymentCheckInterval) clearInterval(paymentCheckInterval);
+      confirmPaymentAndFinish();
+    } else {
+      btn.classList.add("btn-error");
+      btn.innerText = "Pagamento ainda não identificado";
+      setTimeout(() => {
+        btn.classList.remove("btn-error");
+        btn.innerText = originalText;
+        btn.disabled = false;
+      }, 2500);
+    }
+  } catch (error) {
+    alert(
+      "Não foi possível verificar o pagamento. Tente novamente em instantes.",
+    );
+    btn.innerText = originalText;
+    btn.disabled = false;
+  }
 }
 
 function confirmPaymentAndFinish() {
